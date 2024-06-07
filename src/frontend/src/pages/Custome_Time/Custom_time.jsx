@@ -36,7 +36,7 @@ function Custom_time() {
        };
        const dateOptions = {
         day: '2-digit',
-        month: 'short', // or 'long' for full month name
+        month: 'short', 
         year: 'numeric'
       };
   
@@ -54,6 +54,7 @@ function Custom_time() {
   const handleConvert = async () => {
     if (!selectedTimeZone || !selectedDate || !selectedTime) {
       console.error('Please select timezone, date, and time.');
+      alert("please input all fields!")
       return;
     }
     const foundZone = timeZones.find(tz => tz.ZoneName === selectedTimeZone);
