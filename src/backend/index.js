@@ -20,7 +20,6 @@ app.use(express.json());
 
 
 
-
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:3001'],
     credentials: true,
@@ -32,12 +31,12 @@ app.use(cors({
 import Time_zone_routes from "./routes/Time_zone_routes.js"
 import auth_routes from "./routes/auth_route.js"
 import User_routes from "./routes/User_routes.js"
-import google_route from "./routes/google_route.js"
 
 app.use('/auth',auth_routes);
 app.use('/timezone',Time_zone_routes);
 app.use('/user',User_routes)
-app.use('/google',google_route)
+
+   
 
 
 app.use((err,req,res,next)=>{
@@ -61,14 +60,4 @@ ConnectDb().then(()=>{
     }
 
 })
-
-
-
-
-
-
-
-
-
-
 

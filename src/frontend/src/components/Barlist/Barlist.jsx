@@ -1,8 +1,7 @@
 import React,{useState,useEffect,useRef} from 'react'
 import Bar from '../Bar/Bar'
 import "./barlist.css"
-import { useGoogleLogin } from '@react-oauth/google'
-import axiosInstance from '../../hooks/api'
+import GoogleCalendar from '../GoogleCalendar/GoogleCalendar'
 
 
 const adjustdatebyOffset=(date,offsetHours)=>{
@@ -23,6 +22,7 @@ function Barlist({timezone,selectedDate,selectedZone}) {
   const [selectedHour, setSelectedHour] = useState(null);
 
 
+  const barlistRef = useRef(null);
 
   const calculateTimeline = (timeZone, referenceOffsetHours) => {
    
@@ -57,7 +57,7 @@ function Barlist({timezone,selectedDate,selectedZone}) {
     }
   }
 
-
+  
   useEffect(()=>{
     const fetchTimeZones= async()=>{
       try {
@@ -121,22 +121,9 @@ function Barlist({timezone,selectedDate,selectedZone}) {
   };
  
 
-  const googleLogin = useGoogleLogin({
-    onSuccess: async ({ code }) => {
-      const tokens = await axiosInstance.post('/google/create-token', {  // http://localhost:3001/auth/google backend that will exchange the code
-        code,
-      });
-  
-      console.log(tokens);
-    },
-    onError:(err)=>{
-      console.log(err.message);
-    },
-    flow: 'auth-code',
-  });
 
   return (
-   <div className="barlist-container" style={{marginTop:"20px"}} > 
+   <div className="barlist-container" style={{marginTop:"20px"}} ref={barlistRef}> 
       {ReorderedZone.map((tz, index) => (
         <div key={tz._id}>
           <Bar timezone={tz} localTimes={Timeline[index].localTimes} localDates={Timeline[index].localDates} selectedZone={selectedZone}  selectedHour={selectedHour} onHourClick={handleHourClick}/>
@@ -144,7 +131,8 @@ function Barlist({timezone,selectedDate,selectedZone}) {
       ))}
       <div className="links">
       <a href="/custom_time">Click Here to compare custom timelines</a>
-      <a href="/" style={{marginLeft:"70px"}} onClick={googleLogin}>Add to your google Calender</a>
+      <a href="/" style={{marginLeft:"70px"}} >Add to your google Calender</a>
+      <GoogleCalendar/>
       </div>
     </div>
   )
